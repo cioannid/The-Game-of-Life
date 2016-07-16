@@ -3,10 +3,35 @@ var cols = 24;
 
 var playing = false;
 
+var currentStateArray;
+var nextStateArray;
+
 // initialize
 function initialize() {
     createTable();
     setupControlButtons();
+
+    currentStateArray = createStateArray();
+    nextStateArray = createStateArray();
+
+    resetStateArrays();
+}
+
+function createStateArray() {
+	var stateArray = new Array(rows);
+	for (var i = 0; i < rows; i++) {
+		stateArray[i] = new Array(cols);
+	}
+	return stateArray;
+}
+
+function resetStateArrays() {
+	for (var row = 0; row < rows; row++) {
+		for (var cell = 0; cell < cols; cell++) {
+			currentStateArray[row][cell] = 0;
+			nextStateArray[row][cell] = 0;
+		}
+	}
 }
 
 // lay out the board
@@ -34,10 +59,16 @@ function createTable() {
 
 function cellClickHandler() {
     var classes = this.getAttribute("class");
+    var rowcol = this.id.split("_");
+    var row = rowcol[0];
+    var col = rowcol[1];
+
     if (classes.indexOf("live") > -1) {
         this.setAttribute("class", "dead");
+        currentStateArray[row][col] = 0;
     } else {
         this.setAttribute("class", "live");
+        currentStateArray[row][col] = 1;
     }
 }
 
