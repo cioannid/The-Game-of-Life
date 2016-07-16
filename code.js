@@ -34,6 +34,16 @@ function resetStateArrays() {
 	}
 }
 
+
+function copyAndResetGrid() {
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            currentStateArray[i][j] = nextStateArray[i][j];
+            nextStateArray[i][j] = 0;
+        }
+    }
+}
+
 function computeNextGeneration() {
 	for (var row = 0; row < rows; row++) {
 		for (var col = 0; col < cols; col++) {
@@ -41,6 +51,14 @@ function computeNextGeneration() {
 			nextStateArray[row][col] = getNextStateForCell(currentStateArray[row][col], numberOfNeighbors);
 		}
 	}
+
+	// copy nextGrid to grid, and reset nextGrid
+    // copyAndResetGrid();
+    var temp = currentStateArray;
+    currentStateArray = nextStateArray;
+    nextStateArray = temp;
+    // copy all 1 values to "live" in the table
+    updateView();
 }
 
 function getNextStateForCell(currentState, numberOfNeighbors) {
@@ -166,6 +184,19 @@ function cellClickHandler() {
     }
 }
 
+function updateView() {
+    for (var i = 0; i < rows; i++) {
+        for (var j = 0; j < cols; j++) {
+            var cell = document.getElementById(i + "_" + j);
+            if (currentStateArray[i][j] == 0) {
+                cell.setAttribute("class", "dead");
+            } else {
+                cell.setAttribute("class", "live");
+            }
+        }
+    }
+}
+
 function setupControlButtons() {
     // button to start
     var startButton = document.getElementById("start");
@@ -200,6 +231,7 @@ function clearButtonHandler() {
 function play() {
     console.log("Play the game");
     computeNextGeneration();
+    
 }
 
 // start everything
