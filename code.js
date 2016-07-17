@@ -7,7 +7,7 @@ var currentStateArray;
 var nextStateArray;
 
 var timer;
-var reproductionTime = 100;
+var reproductionTime = 1000;
 
 // initialize
 function initialize() {
@@ -227,9 +227,16 @@ function startButtonHandler() {
 
 function clearButtonHandler() {
     console.log("Clear the game: stop playing, clear the grid");
-    playing = false;
+    if (playing) {
+    	playing = false;
+    	clearTimeout(timer);
+    }
+
     var startButton = document.getElementById("start");
     startButton.innerHTML = "start";
+
+    resetStateArrays();
+    updateView();
 }
 
 // run the life game
