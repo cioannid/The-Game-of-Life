@@ -1,5 +1,5 @@
-var rows = 24;
-var cols = 24;
+var rows = 50;
+var cols = 128;
 
 var playing = false;
 
@@ -209,17 +209,23 @@ function setupControlButtons() {
     // button to clear
     var clearButton = document.getElementById("clear");
     clearButton.onclick = clearButtonHandler;
+
+    // button for random cells
+    var randomButton = document.getElementById("random");
+    randomButton.onclick = randomButtonHandler;
 }
 
 function startButtonHandler() {
     if (playing === false) {
         console.log("Continue the game");
+        document.getElementById("random").disabled = true;
         playing = true;
         this.innerHTML = "pause";
         play();
     } else {
     	clearTimeout(timer);
         console.log("Pause the game");
+        document.getElementById("random").disabled = false;
         playing = false;
         this.innerHTML = "continue";
     }
@@ -237,6 +243,21 @@ function clearButtonHandler() {
 
     resetStateArrays();
     updateView();
+
+    document.getElementById("random").disabled = false;
+}
+
+function randomButtonHandler() {
+	clearButtonHandler();
+
+	for (var i = 0; i < rows; i++) {
+		for (var j = 0; j < cols; j++) {
+			nextState = Math.round(Math.random());
+			currentStateArray[i][j] = nextState;
+		}
+	}
+
+	updateView();
 }
 
 // run the life game
