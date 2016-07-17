@@ -6,6 +6,9 @@ var playing = false;
 var currentStateArray;
 var nextStateArray;
 
+var timer;
+var reproductionTime = 100;
+
 // initialize
 function initialize() {
     createTable();
@@ -53,12 +56,13 @@ function computeNextGeneration() {
 	}
 
 	// copy nextGrid to grid, and reset nextGrid
-    // copyAndResetGrid();
-    var temp = currentStateArray;
-    currentStateArray = nextStateArray;
-    nextStateArray = temp;
-    // copy all 1 values to "live" in the table
-    updateView();
+	// copyAndResetGrid();
+	var temp = currentStateArray;
+	currentStateArray = nextStateArray;
+	nextStateArray = temp;
+	// copy all 1 values to "live" in the table
+	updateView();
+	timer = setTimeout(play, reproductionTime);
 }
 
 function getNextStateForCell(currentState, numberOfNeighbors) {
@@ -214,6 +218,7 @@ function startButtonHandler() {
         this.innerHTML = "pause";
         play();
     } else {
+    	clearTimeout(timer);
         console.log("Pause the game");
         playing = false;
         this.innerHTML = "continue";
